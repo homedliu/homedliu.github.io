@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="npm,hexo,github," />
+  <meta name="keywords" content="javascript," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta name="keywords" content="npm,hexo,github">
+<meta name="description" content="apply()与call()可以说是前端技术一小重点，也是面试官经常会提到的问题，一直以来不是特别的清楚具体的用法，只知道它们之前的区别。 看过了很多牛人的博客，这里简单易懂的总结下，apply()与call()之间的区别以及用法。 当然学习一个技术点当然要以最权威最官方的文档来讲解学习。 一.方法的定义call方法: 语法：call([thisObj[,arg1[, arg2[,   [,.ar">
+<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="http://yoursite.com/2015/08/26/ceshi/index.html">
+<meta property="og:title" content="apply()与call()的区别以及用法">
+<meta property="og:url" content="http://yoursite.com/2015/09/01/callAapply/index.html">
 <meta property="og:site_name" content="Homed Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="apply()与call()可以说是前端技术一小重点，也是面试官经常会提到的问题，一直以来不是特别的清楚具体的用法，只知道它们之前的区别。 看过了很多牛人的博客，这里简单易懂的总结下，apply()与call()之间的区别以及用法。 当然学习一个技术点当然要以最权威最官方的文档来讲解学习。 一.方法的定义call方法: 语法：call([thisObj[,arg1[, arg2[,   [,.ar">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-14T11:48:02.843Z">
+<meta property="og:updated_time" content="2017-10-15T07:55:27.006Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="test">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="apply()与call()的区别以及用法">
+<meta name="twitter:description" content="apply()与call()可以说是前端技术一小重点，也是面试官经常会提到的问题，一直以来不是特别的清楚具体的用法，只知道它们之前的区别。 看过了很多牛人的博客，这里简单易懂的总结下，apply()与call()之间的区别以及用法。 当然学习一个技术点当然要以最权威最官方的文档来讲解学习。 一.方法的定义call方法: 语法：call([thisObj[,arg1[, arg2[,   [,.ar">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/08/26/ceshi/"/>
+  <link rel="canonical" href="http://yoursite.com/2015/09/01/callAapply/"/>
 
 
 
 
 
-  <title>test | Homed Blog</title>
+  <title>apply()与call()的区别以及用法 | Homed Blog</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/26/ceshi/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/01/callAapply/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HOMED">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">test</h1>
+          <h1 class="post-title" itemprop="name headline">apply()与call()的区别以及用法</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-26T00:00:00+08:00">
-                2015-08-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-01T00:00:00+08:00">
+                2015-09-01
               </time>
             
 
@@ -325,8 +325,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/�����/" itemprop="url" rel="index">
-                    <span itemprop="name">�����</span>
+                  <a href="/categories/前端技术/" itemprop="url" rel="index">
+                    <span itemprop="name">前端技术</span>
                   </a>
                 </span>
 
@@ -362,15 +362,29 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>apply()与call()可以说是前端技术一小重点，也是面试官经常会提到的问题，一直以来不是特别的清楚具体的用法，只知道它们之前的区别。</p>
+<p>看过了很多牛人的博客，这里简单易懂的总结下，apply()与call()之间的区别以及用法。</p>
+<p>当然学习一个技术点当然要以最权威最官方的文档来讲解学习。</p>
+<h3 id="一-方法的定义"><a href="#一-方法的定义" class="headerlink" title="一.方法的定义"></a>一.方法的定义</h3><p><strong>call方法</strong>:</p>
+<p>语法：call([thisObj[,arg1[, arg2[,   [,.argN]]]]])<br>定义：调用一个对象的一个方法，以另一个对象替换当前对象。<br>说明：<br>call 方法可以用来代替另一个对象调用一个方法。call 方法可将一个函数的对象上下文从初始的上下文改变为由 thisObj 指定的新对象。<br>如果没有提供 thisObj 参数，那么 Global 对象被用作 thisObj。</p>
+<p><strong>apply方法</strong>：</p>
+<p>语法：apply([thisObj[,argArray]])<br>定义：应用某一对象的一个方法，用另一个对象替换当前对象。<br>说明：<br>如果 argArray 不是一个有效的数组或者不是 arguments 对象，那么将导致一个 TypeError。<br>如果没有提供 argArray 和 thisObj 任何一个参数，那么 Global 对象将被用作 thisObj， 并且无法被传递任何参数。</p>
+<a id="more"></a>
+<p>是不是看完方法的定义还是不好区分它们的具体区别，这里可以通俗的说：</p>
+<p><strong>”其实就是第二参数传的值不同，apply()方法传的第二参数是个数组，而call()它是从第二个参数开始一个一个传参数”</strong></p>
+<p>这么一说是不是非常好理解了，那么它们有什么用法该怎么使用呢？</p>
+<h3 id="二-示例代码："><a href="#二-示例代码：" class="headerlink" title="二.示例代码："></a>二.示例代码：</h3><p><strong>（1）基本用法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> add(a,b)&#123;</div><div class="line">  <span class="built_in">return</span> a+b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">function</span> sub(a,b)&#123;</div><div class="line">  <span class="built_in">return</span> a-b;</div><div class="line">&#125;</div><div class="line">var a1 = add.apply(sub,[4,2]);　　//sub调用add的方法</div><div class="line">var a2 = sub.apply(add,[4,2]);</div><div class="line">alert(a1);  //6</div><div class="line">alert(a2);  //2</div><div class="line"></div><div class="line">/*call的用法*/</div><div class="line">var a1 = add.call(sub,4,2);</div></pre></td></tr></table></figure>
+<p><strong>（2）实现继承：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> Animal(name)&#123;</div><div class="line">  this.name = name;</div><div class="line">  this.showName = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(this.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> Cat(name)&#123;</div><div class="line">  Animal.apply(this,[name]);</div><div class="line">&#125;</div><div class="line"></div><div class="line">var cat = new Cat(<span class="string">"咕咕"</span>);</div><div class="line">cat.showName();</div><div class="line"></div><div class="line">/*call的用法*/</div><div class="line">Animal.call(this,name);</div></pre></td></tr></table></figure>
+<p><strong>（3）多重继承：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">Class10</span></span>()&#123;</div><div class="line">  this.showSub = <span class="keyword">function</span>(a,b)&#123;</div><div class="line">        alert(a - b);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">Class11</span></span>()&#123;</div><div class="line">  this.showAdd = <span class="keyword">function</span>(a,b)&#123;</div><div class="line">        alert(a + b);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">Class12</span></span>()&#123;</div><div class="line">  Class10.apply(this);</div><div class="line">  Class11.apply(this);</div><div class="line">  // Class10.call(this);</div><div class="line">  //Class11.call(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">var c2 = new Class12();</div><div class="line">c2.showSub(3,1);    //2</div><div class="line">c2.showAdd(3,1);    //4</div></pre></td></tr></table></figure>
+<p><strong>apply的一些其他巧妙用法</strong></p>
+<p>　　（1）Math.max 可以实现得到数组中最大的一项：</p>
+<p>　　　　因为Math.max不支持Math.max([param1,param2])也就是数组，但是它支持Math.max(param1,param2…)，所以可以根据apply的特点来解决 var max=Math.max.apply(null,array)，这样就轻易的可以得到一个数组中的最大项（apply会将一个数组转换为一个参数接一个参数的方式传递给方法）<br>          这块在调用的时候第一个参数给了null，这是因为没有对象去调用这个方法，我只需要用这个方法帮我运算，得到返回的结果就行，所以直接传递了一个null过去。<br>　　　 用这种方法也可以实现得到数组中的最小项：Math.min.apply(null,array)</p>
+<p>　　（2）Array.prototype.push可以实现两个数组的合并<br>　　　　同样push方法没有提供push一个数组，但是它提供了push(param1,param2…paramN)，同样也可以用apply来转换一下这个数组，即：<br> 　　　 1.var arr1=new Array(“1”,”2”,”3”);<br>          2.var arr2=new Array(“4”,”5”,”6”);<br>          3.Array.prototype.push.apply(arr1,arr2);    //得到合并后数组的长度，因为push就是返回一个数组的长度<br>          也可以这样理解，arr1调用了push方法，参数是通过apply将数组转换为参数列表的集合</p>
+<p>通常在什么情况下，可以使用apply类似Math.max等之类的特殊用法：</p>
+<h2 id="一般在目标函数只需要n个参数列表，而不接收一个数组的形式，可以通过apply的方式巧妙地解决这个问题。"><a href="#一般在目标函数只需要n个参数列表，而不接收一个数组的形式，可以通过apply的方式巧妙地解决这个问题。" class="headerlink" title="一般在目标函数只需要n个参数列表，而不接收一个数组的形式，可以通过apply的方式巧妙地解决这个问题。"></a><strong>一般在目标函数只需要n个参数列表，而不接收一个数组的形式，可以通过apply的方式巧妙地解决这个问题。</strong></h2><p>原文参考：<br>1:[<a href="http://www.cnblogs.com/lengyuehuahun/p/5643625.html" target="_blank" rel="external">http://www.cnblogs.com/lengyuehuahun/p/5643625.html</a>]<br>2:[<a href="http://www.iteye.com/topic/599108" target="_blank" rel="external">http://www.iteye.com/topic/599108</a>]</p>
 
       
     </div>
@@ -388,11 +402,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/npm/" rel="tag"># npm</a>
-          
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
-          
-            <a href="/tags/github/" rel="tag"># github</a>
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
           
         </div>
       
@@ -414,10 +424,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/10/08/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -498,7 +504,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -563,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-方法的定义"><span class="nav-number">1.</span> <span class="nav-text">一.方法的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-示例代码："><span class="nav-number">2.</span> <span class="nav-text">二.示例代码：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一般在目标函数只需要n个参数列表，而不接收一个数组的形式，可以通过apply的方式巧妙地解决这个问题。"><span class="nav-number"></span> <span class="nav-text">一般在目标函数只需要n个参数列表，而不接收一个数组的形式，可以通过apply的方式巧妙地解决这个问题。</span></a></div>
             
 
           </div>
