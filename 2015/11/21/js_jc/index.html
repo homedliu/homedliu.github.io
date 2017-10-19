@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="正所谓“站在牛人的肩膀，不怕脚酸”（有这句话吗？。。），哈哈哈，就是借鉴牛人的学习成果，是最快的一种学习方式，感谢阮一峰老师，他的博客让我在前端学习的路途中，少了不少的绊脚石。近日看了他的js原型继承有感，也顺便总结下。 原型写法和用法 123456789101112131415function Cat()&amp;#123;    this.Color = &quot;black&quot;;    this.eat =">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JS原型链与继承">
+<meta property="og:url" content="http://yoursite.com/2015/11/21/js_jc/index.html">
+<meta property="og:site_name" content="Homed Blog">
+<meta property="og:description" content="正所谓“站在牛人的肩膀，不怕脚酸”（有这句话吗？。。），哈哈哈，就是借鉴牛人的学习成果，是最快的一种学习方式，感谢阮一峰老师，他的博客让我在前端学习的路途中，少了不少的绊脚石。近日看了他的js原型继承有感，也顺便总结下。 原型写法和用法 123456789101112131415function Cat()&amp;#123;    this.Color = &quot;black&quot;;    this.eat =">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-18T11:44:14.467Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JS原型链与继承">
+<meta name="twitter:description" content="正所谓“站在牛人的肩膀，不怕脚酸”（有这句话吗？。。），哈哈哈，就是借鉴牛人的学习成果，是最快的一种学习方式，感谢阮一峰老师，他的博客让我在前端学习的路途中，少了不少的绊脚石。近日看了他的js原型继承有感，也顺便总结下。 原型写法和用法 123456789101112131415function Cat()&amp;#123;    this.Color = &quot;black&quot;;    this.eat =">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/11/21/js_jc/"/>
+
+
+
+
+
+  <title>深入理解JS原型链与继承 | Homed Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Homed Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-search">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-search"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/21/js_jc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HOMED">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Homed Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解JS原型链与继承</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-21T00:00:00+08:00">
+                2015-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端技术/" itemprop="url" rel="index">
+                    <span itemprop="name">前端技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>正所谓“站在牛人的肩膀，不怕脚酸”（有这句话吗？。。），哈哈哈，就是借鉴牛人的学习成果，是最快的一种学习方式，感谢阮一峰老师，他的博客让我在前端学习的路途中，少了不少的绊脚石。近日看了他的js原型继承有感，也顺便总结下。</p>
+<p><strong>原型写法和用法</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> <span class="function"><span class="title">Cat</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var cat1 = new Cat();</div><div class="line">cat1.eat(); //吃老鼠</div><div class="line">cat1.A(); //Cat A</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>上面这种写法是我们熟知的工厂模式，这种模式我觉得应该算是标准的原型写法。但是一般我不会使用这种写法，我会用直接量来写实现上面的方法，因为使用函数封装方法我个人感觉是很危险的，因为函数写法相当于是一个全局方法，他的执行顺序也是优先级最高的，这种方法不利于在大的项目中管理，所以一般用直接量，直接量最大的好处是只有当代码执行到这段代码后才会开始运行。接下来我们修改下上面的代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var cat1 = new Cat();</div><div class="line">cat1.eat(); //吃老鼠</div><div class="line">cat1.A(); //Cat A</div></pre></td></tr></table></figure>
+<p><strong>使用原型扩展提高性能</strong></p>
+<p>可能很多人会无法理解为什么我们要通过prototype来输入方法，也听过看过很多人说直接使用函数的效率是最低的，但是不知道原理。其实我们拿上面的案例做个简单的实验你或许就能懂了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B =  <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;</div><div class="line">var cat1 = new Cat();</div><div class="line">var cat2 = new Cat();</div><div class="line">alert(cat1.Eat == cat2.Eat) // <span class="literal">false</span></div><div class="line">alert(cat1.A == cat2.A) // <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p>看到结果是否很震惊，Eat和A方法都是Cat对象里面的，为什么两个实例一对比会产生不同的结果呢？在JS原型链中，通过prototype声明的方法会被存入内存中，不管我们实例化多少次Cat访问通过prototype扩展的A或者B方法，他们都是去读取同一个内存，但是Cat自身的属性和方法却不是这样，而是每次都会跟着实例化，如果该对象被频繁调用，那将会占用大量的内存，这就是为什么我们用prototype来扩展我们对象的属性和方法。</p>
+<p><strong>构造函数</strong></p>
+<p>上面这两种写法都是标准的原型写法，每个原型都有一个构造函数，每个原型的实例也都有一个构造函数。这个知识点非常的关键，这个构造函数你可以理解为和我们的身份证一样，每个原型构造函数都是唯一的，我们不能随意的去改变他们的身份证。我们来检测下上面的代码的构造函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var cat1 = new Cat();</div><div class="line">console.log(Cat.prototype.constructor == Cat); //<span class="literal">true</span></div><div class="line">console.log(cat1.constructor == Cat); //<span class="literal">true</span></div><div class="line">console.log(cat1.constructor == Cat.prototype.constructor); //<span class="literal">true</span></div></pre></td></tr></table></figure>
+<pre><code>可能看到上面的有些人会说，你不是说每个构造函数都是一个身份证吗？为啥cat1的构造函数和Cat构造函数一样呢，坑爹吧。别急，这就是JS这门有趣的原因之一，cat1我们专业名词称它是Cat的实例，他们的构造函数是共享的。你也可以把cat1理解为Cat的一个复制品，或者说克隆人。我们可以无限复制Cat出来。
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var cat1 = new Cat();</div><div class="line">cat1.Eat(); //吃老鼠</div><div class="line">var cat2 = new Cat();</div><div class="line">cat2.Eat(); //吃老鼠</div></pre></td></tr></table></figure>
+<p>Cat的复制品的构造函数是都指向Cat本身的，记住这点。</p>
+<p><strong>原型继承</strong><br>    我觉得要正真理解原型链就需要先理解原型继承的原理，理解了如何继承，基本上你就对原型链掌握很深了。我们来实现一个简单的原型继承，我通过阮老师的文章中写的直接继承prototype来实现继承，修改上面的代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">Dog.prototype = Cat.prototype;</div><div class="line">console.log(Dog.prototype.constructor == Cat); // <span class="literal">true</span></div><div class="line">var dog1 = new Dog();</div><div class="line">dog1.A(); // Cat A</div><div class="line">dog1.B(); // Cat B</div></pre></td></tr></table></figure>
+<p>上面的代码，我设置了一个Dog来继承Cat,我们使用prototype来实现继承，实际继承成功了,Dog的实例dog1调用了Cat里面的prototype的A和B方法。但是这里出了一个小问题，通过prototype继承导致了Dog的构造函数发生了改变，导致它指向了Cat，这就是我们代码中console输出的原因。我们上面说过每个原型都有一个自己的独立的构造函数，我们却改变了它，这样会导致原型混乱，所以我们必须把Dog的构造函数指回Dog本身。所以修改下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">Dog.prototype = Cat.prototype;</div><div class="line">Dog.prototype.constructor = Dog;</div><div class="line">console.log(Dog.prototype.constructor == Cat); // <span class="literal">false</span></div><div class="line">console.log(Cat.prototype.constructor == Dog); // <span class="literal">true</span></div><div class="line">var dog1 = new Dog();</div><div class="line">dog1.A(); // Cat A</div><div class="line">dog1.B(); // Cat B</div></pre></td></tr></table></figure>
+<p>上面我通过Dog.prototype.constructor = Dog;这句话把Dog构造函数指回自己了，但是坑爹的是这样做之后，原先的Cat的构造函数也被改变成了Dog，唉，这是要闹哪样，完全坑爹，所以这种继承方式也是失败的，但是我们已经接近成功了，阮老师后面提出了利用空对象作为中介来继承。好的的直接上代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">var Fn = <span class="function"><span class="title">function</span></span>()&#123;&#125;;</div><div class="line">Fn.prototype = Cat.prototype;</div><div class="line">Dog.prototype = new Fn();</div><div class="line">Dog.prototype.constructor = Dog;</div><div class="line">console.log(Dog.prototype.constructor == Dog); // <span class="literal">true</span></div><div class="line">console.log(Cat.prototype.constructor == Cat); // <span class="literal">true</span></div><div class="line">var dog1 = new Dog();</div><div class="line">dog1.A(); // Cat A</div><div class="line">dog1.B(); // Cat B</div></pre></td></tr></table></figure>
+<p>这下实现完美的继承了，上面是我根据阮老师的提供的方式实现的一个继承，Dog不止继承了Cat里面的prototype的方法，而且构造函数还是指回自己，Cat的构造函数也没被篡改。貌似非常完美的继承。但…..</p>
+<p><strong>prototype继承缺陷</strong></p>
+<p>上面的通过原型继承看起来很完美，但是还是有缺陷，并不是说@阮老师的方法有问题，他的继承方法是没问题的，但是只能针对空对象继承。</p>
+<p> 实际上通过prototype继承，他只能继承对象通过prototype的属性和方法，他无法继承对象本身的属性，举个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">var Fn = <span class="function"><span class="title">function</span></span>()&#123;&#125;;</div><div class="line">Fn.prototype = Cat.prototype;</div><div class="line">Dog.prototype = new Fn();</div><div class="line">Dog.prototype.constructor = Dog;</div><div class="line">console.log(Dog.prototype.constructor == Dog); // <span class="literal">true</span></div><div class="line">console.log(Cat.prototype.constructor == Cat); // <span class="literal">true</span></div><div class="line">var dog1 = new Dog();</div><div class="line">dog1.A(); // Cat A</div><div class="line">dog1.B(); // Cat B</div><div class="line">console.log(dog1.Color);//undefined</div><div class="line">dog1.Eat();//has no method <span class="string">'Eat'</span></div></pre></td></tr></table></figure>
+<p>我们在之前的代码里面调用了我们继承Cat的方法和属性，但是只有Cat里面的A和B方法被调用成功了，但是Cat的自身属性里面的Color和Eat方法都没调用成功，说明咱们根本没有继承到他自身的属性，只继承了通过prototype扩展的方法，这就是JS原型链的奇特现象之一，这种原型继承的缺陷貌似阮一峰老师也没发现。</p>
+<p>所以我针对上面的方法做了些修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">Dog.prototype = new Cat();</div><div class="line">Dog.prototype.constructor = Dog;</div><div class="line">console.log(Dog.prototype.constructor == Dog); // <span class="literal">true</span></div><div class="line">console.log(Cat.prototype.constructor == Cat); // <span class="literal">true</span></div><div class="line">var dog1 = new Dog();</div><div class="line">alert(Dog.Weight);// 30</div><div class="line">dog1.A(); // Cat A</div><div class="line">dog1.B(); // Cat B</div><div class="line">alert(dog1.Color);//black</div><div class="line">dog1.Eat();//吃老鼠</div></pre></td></tr></table></figure>
+<p>上面的我将继承者Dog的原型直接指向了Cat的实例，然后再将Dog的构造函数指回本身，这样就可以实现完整的继承了，Dog不仅仅继承了Cat的prototype而已还继承了Cat本身自带的属性和方法。在上面中我们知道Cat的实例cat1其实就是包含了Cat所有的属性和方法，他不会区分你是不是在原型中的方法还是在自身中的方法，都会完全被复制到实例中，所以我们直接去继承实例，这样子就可以直接获取到Cat中所有的方法和属性。而且直接继承实例我感觉也更加安全且高效，因为不去直接操作原型本身，只是操作原型实例。</p>
+<p><strong>通过深拷贝实现完美继承</strong></p>
+<p>其实上面的方法离完美的继承方式还是存在着一个缺陷的。我们的的继承者Dog如果他现在里面存在着原型方法的时候，我们又想让她保留现在的原型方法情况下，还可以去继承Cat里面的所有方法怎么办，用上面的方法是无法实现的，请看代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype =&#123;</div><div class="line">    A:<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"Cat A"</span>);</div><div class="line">    &#125;,</div><div class="line">    B:<span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"Cat B"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">Dog.prototype.testDog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"test Dog"</span>);</div><div class="line">&#125;</div><div class="line">Dog.prototype = new Cat();</div><div class="line">Dog.prototype.constructor = Dog;</div><div class="line">var dog1 = new Dog();</div><div class="line">alert(dog1.Weight);//30</div><div class="line">dog1.testDog();//has no method <span class="string">'testDog'</span></div></pre></td></tr></table></figure>
+<p>看上面的代码，我只是在继承者Dog的原型里面添加了一个testDog的方法，然后Dog用我们上面的方法去继承Cat后，Dog自身的属性Weight在继承Cat的过程中也被保留下来了，但是Dog存在原型链中的testDog却在继承过程中被干掉了，无言，心碎。这个时候我想到了阮一峰老师的拷贝继承，他的拷贝继承依然是存在的缺陷，但是我直接改进了他的方法，那样实现了完美的继承：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">var Cat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Color = <span class="string">"black"</span>;</div><div class="line">    this.Eat = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        alert(<span class="string">"吃老鼠"</span>);</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">Cat.prototype.A = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat A"</span>);</div><div class="line">&#125;;</div><div class="line">Cat.prototype.B =  <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"Cat B"</span>);</div><div class="line">&#125;</div><div class="line">var Dog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    this.Weight = <span class="string">"30"</span>;</div><div class="line">&#125;</div><div class="line">Dog.prototype.testDog = <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">    alert(<span class="string">"test Dog"</span>);</div><div class="line">&#125;</div><div class="line">var extend = <span class="keyword">function</span>(Child,Parent)&#123;</div><div class="line">    var p = new Parent();</div><div class="line">    var c = Child.prototype;</div><div class="line">    <span class="keyword">for</span> (var i <span class="keyword">in</span> p) &#123;</div><div class="line">        c[i] = p[i];</div><div class="line">    &#125;</div><div class="line">    c.uber = p;</div><div class="line">&#125;</div><div class="line">//用我们写好的继承方法执行继承</div><div class="line">extend(Dog,Cat);</div><div class="line">var dog1 = new Dog();</div><div class="line">dog1.A(); // Cat A</div><div class="line">dog1.Eat(); // 吃老鼠</div><div class="line">dog1.testDog(); // <span class="built_in">test</span> Dog</div><div class="line">alert(dog1.Weight); // 30</div></pre></td></tr></table></figure>
+<p>其实上面我们extend方法中我只是通过了for..in去遍历Cat生成的实例中的所有属性和方法，然后将这些值复制到我们的Dog中，这样子就可以实现保留本身属性又继承，这种方法是应该算是最优的解决方法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/12/cssFlex/" rel="next" title="CSS flex 页面布局用法">
+                <i class="fa fa-chevron-left"></i> CSS flex 页面布局用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/06/jq_closest/" rel="prev" title="模仿百度搜索点击自身以外地方关闭弹出层">
+                模仿百度搜索点击自身以外地方关闭弹出层 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="HOMED" />
+            
+              <p class="site-author-name" itemprop="name">HOMED</p>
+              <p class="site-description motion-element" itemprop="description">热爱生活 热爱前端  技术改变生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/homedliu" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HOMED</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
